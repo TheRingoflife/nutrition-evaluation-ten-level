@@ -132,7 +132,6 @@ if st.sidebar.button("🧮 Predict"):
     st.pyplot(draw_hsr_star_plot(predicted_label))
 
     # === 概率表 ===
-    st.write("Model classes:", model.classes_)
     st.subheader("📊 Probability Table")
     true_classes = model.classes_
     hsr_labels = [label_map.get(cls, f"Class {cls}") for cls in true_classes]
