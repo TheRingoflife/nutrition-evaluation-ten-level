@@ -51,6 +51,11 @@ scaler = load_scaler()
 background_data = load_background_data()
 explainer = shap.Explainer(model, background_data)
 
+label_map = {
+    0: 0.5, 1: 1.0, 2: 1.5, 3: 2.0, 4: 2.5,
+    5: 3.0, 6: 3.5, 7: 4.0, 8: 4.5, 9: 5.0
+}
+
 # ===== HSR 风格星图绘制函数 =====
 def draw_hsr_star_plot(score):
     fig, ax = plt.subplots(figsize=(8, 3))
@@ -118,36 +123,38 @@ if st.sidebar.button("🧮 Predict"):
     prediction = model.predict(user_scaled_df)[0]
     prob_array = model.predict_proba(user_scaled_df)[0]
 
-    label_map = {
-        0: 0.5, 1: 1.0, 2: 1.5, 3: 2.0, 4: 2.5,
-        5: 3.0, 6: 3.5, 7: 4.0, 8: 4.5, 9: 5.0
-    }
-    predicted_label = label_map.get(prediction, f"Class {prediction}")
+    # === 使用 model.classes_ 进行预测类别匹配 ===
+    true_class = model.classes_[prediction]
+    predicted_label = label_map.get(true_class, f"Class {true_class}")
 
     st.subheader("🔍 Prediction Result")
     st.markdown(f"**Prediction:** `{predicted_label}`")
     st.pyplot(draw_hsr_star_plot(predicted_label))
 
+    # === 概率表 ===
     st.subheader("📊 Probability Table")
+    true_classes = model.classes_
+    hsr_labels = [label_map.get(cls, f"Class {cls}") for cls in true_classes]
     prob_df = pd.DataFrame({
-        "HSR Class": [label_map[i] for i in range(len(prob_array))],
-        "Probability": [f"{p:.2f}" for p in prob_array]
+        "HSR Class": hsr_labels,
+        "Probability": [f"{prob_array[i]:.2f}" for i in range(len(true_classes))]
     })
     st.dataframe(prob_df, use_container_width=True)
 
+    # === SHAP force plot ===
     st.subheader("📈 SHAP Force Plot (All Classes)")
     shap_values = explainer(user_scaled_df)
     sample_index = 0
-    for i in range(10):
-        with st.expander(f"🔍 SHAP for Class {label_map[i]}"):
+    for i, cls in enumerate(model.classes_):
+        class_label = label_map.get(cls, f"Class {cls}")
+        with st.expander(f"🔍 SHAP for Class {class_label}"):
             force_plot_html = shap.plots.force(
                 base_value=explainer.expected_value[i],
                 shap_values=shap_values.values[sample_index, :, i],
                 features=user_scaled_df.iloc[sample_index],
-                matplotlib=False,
                 show=False
-            )
-            components.html(shap.getjs() + force_plot_html.html(), height=400)
+            ).html()
+            components.html(shap.getjs() + force_plot_html, height=400)
 
 # ===== 页脚 =====
 st.markdown("---")
