@@ -51,22 +51,19 @@ scaler = load_scaler()
 background_data = load_background_data()
 explainer = shap.Explainer(model, background_data)
 
-# ===== HSR 风格星图绘制函数（支持0.5到5.0评分） =====
+# ===== HSR 风格星图绘制函数 =====
 def draw_hsr_star_plot(score):
     fig, ax = plt.subplots(figsize=(8, 3))
     ax.set_xlim(0, 6)
     ax.set_ylim(0, 2)
     ax.axis('off')
 
-    # 背景框
     box = plt.Rectangle((0.2, 0.4), 5.6, 1.2, linewidth=2,
                         edgecolor='black', facecolor='white')
     ax.add_patch(box)
 
-    # 标题标签
     ax.text(3.0, 1.65, "HEALTH STAR RATING", fontsize=14, ha='center', fontweight='bold')
 
-    # 计算满星和半星
     full_stars = int(score)
     half_star = (score - full_stars) >= 0.5
 
@@ -75,15 +72,13 @@ def draw_hsr_star_plot(score):
         if i < full_stars:
             ax.text(x, 1.0, '★', fontsize=32, ha='center', va='center', color='black')
         elif i == full_stars and half_star:
-            ax.text(x, 1.0, '⯨', fontsize=32, ha='center', va='center', color='black')  # 半星（可换为⯪或🌓）
+            ax.text(x, 1.0, '⯨', fontsize=32, ha='center', va='center', color='black')
         else:
             ax.text(x, 1.0, '☆', fontsize=32, ha='center', va='center', color='gray')
 
-    # 显示分值
     ax.text(5.45, 1.05, f"{score:.1f}", fontsize=17, fontweight='bold', va='center', ha='left', color='#222')
     plt.tight_layout()
     return fig
-
 
 # ===== 输入栏 =====
 st.sidebar.header("🔢 Input Variables")
@@ -117,13 +112,14 @@ if st.sidebar.button("🧮 Predict"):
     user_input_for_scaler = pd.DataFrame([[input_dict[feat] for feat in scaled_columns]], columns=scaled_columns)
     user_scaled_part = scaler.transform(user_input_for_scaler)
     user_scaled_df = pd.DataFrame(user_scaled_part, columns=scaled_columns)
-
     user_scaled_df["procef_4"] = procef_4
     user_scaled_df = user_scaled_df[final_columns]
 
     prediction = model.predict(user_scaled_df)[0]
     prob_array = model.predict_proba(user_scaled_df)[0]
-    label_map = {i: round(0.5 + 0.5 * i, 1) for i in range(10)}
+
+    # 使用模型真实类别建立 label_map
+    label_map = {cls: round(0.5 + 0.5 * cls, 1) for cls in model.classes_}
     predicted_label = label_map.get(prediction, f"Class {prediction}")
 
     st.subheader("🔍 Prediction Result")
@@ -132,26 +128,24 @@ if st.sidebar.button("🧮 Predict"):
 
     st.subheader("📊 Probability Table")
     prob_df = pd.DataFrame({
-        "HSR Class": [label_map[i] for i in range(len(prob_array))],
+        "HSR Class": [label_map[cls] for cls in model.classes_],
         "Probability": [f"{p:.2f}" for p in prob_array]
     })
     st.dataframe(prob_df, use_container_width=True)
 
     st.subheader("📈 SHAP Force Plot (All Classes)")
-    shap_values = explainer(user_scaled_df)  # shape: [samples, features, classes]
-    label_map = {i: round(0.5 + 0.5 * i, 1) for i in range(10)}
+    shap_values = explainer(user_scaled_df)
     sample_index = 0
-    for class_index in range(shap_values.values.shape[2]):
-        with st.expander(f"🔍 SHAP for Class {label_map[class_index]}"):
+    for i, cls in enumerate(model.classes_):
+        with st.expander(f"🔍 SHAP for Class {label_map[cls]}"):
             force_plot_html = shap.plots.force(
-                base_value=explainer.expected_value[class_index],
-                shap_values=shap_values.values[sample_index, :, class_index],
+                base_value=explainer.expected_value[i],
+                shap_values=shap_values.values[sample_index, :, i],
                 features=user_scaled_df.iloc[sample_index],
                 matplotlib=False,
                 show=False
             )
             components.html(shap.getjs() + force_plot_html.html(), height=400)
-
 
 # ===== 页脚 =====
 st.markdown("---")
