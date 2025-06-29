@@ -1,11 +1,11 @@
-# 修改说明：将原五分类代码修改为十分类版本，标签为0.5到5.0（步长0.5），并用HSR星图代替Nutri-score图
-
 import streamlit as st
 import numpy as np
 import pandas as pd
 import joblib
 import shap
 import matplotlib.pyplot as plt
+from matplotlib.patches import Circle
+import matplotlib.patheffects as path_effects
 import streamlit.components.v1 as components
 
 # ===== 页面设置 =====
@@ -30,32 +30,25 @@ scaler = load_scaler()
 background_data = load_background_data()
 explainer = shap.Explainer(model, background_data)
 
-# ===== HSR 风格星图绘制函数 =====
-def draw_hsr_star_plot(score):
-    fig, ax = plt.subplots(figsize=(8, 3))
-    ax.set_xlim(0, 6)
-    ax.set_ylim(0, 2)
+# ===== HSR 风格图绘制函数 =====
+def draw_basic_hsr_template(score=4.5):
+    fig, ax = plt.subplots(figsize=(4, 4), dpi=120)
+    ax.set_xlim(0, 10)
+    ax.set_ylim(0, 10)
     ax.axis('off')
 
-    # 背景框
-    box = plt.Rectangle((0.2, 0.4), 5.6, 1.2, linewidth=2,
-                        edgecolor='black', facecolor='white')
-    ax.add_patch(box)
+    # 主圆
+    main_circle = Circle((5, 5.5), 4, facecolor='#005eb8', edgecolor='black', lw=2)
+    ax.add_patch(main_circle)
 
-    # 标签
-    ax.text(3.0, 1.65, "HEALTH STAR RATING", fontsize=14, ha='center', fontweight='bold')
+    # 分数文本
+    score_text = ax.text(5, 5.5, f"{score}", fontsize=38, color='white',
+                         ha='center', va='center', weight='bold')
+    score_text.set_path_effects([path_effects.withStroke(linewidth=2, foreground='black')])
 
-    full_stars = int(score)
-    half_star = (score - full_stars) >= 0.5
-
-    for i in range(5):
-        x = 0.9 + i
-        if i < full_stars:
-            ax.text(x, 1.0, '★', fontsize=32, ha='center', va='center', color='black')
-        elif i == full_stars and half_star:
-            ax.text(x, 1.0, '⯨', fontsize=32, ha='center', va='center', color='black')
-        else:
-            ax.text(x, 1.0, '☆', fontsize=32, ha='center', va='center', color='gray')
+    # 下方说明
+    ax.text(5, 2.0, "HEALTH STAR", fontsize=14, ha='center', va='center', color='black', weight='bold')
+    ax.text(5, 1.0, "RATING", fontsize=14, ha='center', va='center', color='black', weight='bold')
     return fig
 
 # ===== 输入栏 =====
@@ -88,9 +81,10 @@ if st.sidebar.button("🧮 Predict"):
     label_map = {i: round(0.5 + 0.5*i, 1) for i in range(10)}
     predicted_score = label_map.get(prediction, prediction)
 
+    # ===== 展示预测结果 =====
     st.subheader("🔍 Prediction Result")
     st.markdown(f"**Predicted HSR Score:** `{predicted_score}`")
-    st.pyplot(draw_hsr_star_plot(predicted_score))
+    st.pyplot(draw_basic_hsr_template(predicted_score))
 
     st.subheader("📊 Probability Table")
     prob_df = pd.DataFrame({
@@ -99,6 +93,7 @@ if st.sidebar.button("🧮 Predict"):
     })
     st.dataframe(prob_df, use_container_width=True)
 
+    # ===== SHAP 力图（全部类别） =====
     st.subheader("📈 SHAP Force Plot (All Classes)")
     shap_values = explainer(user_scaled_df)
     for class_index in range(shap_values.values.shape[2]):
@@ -112,5 +107,6 @@ if st.sidebar.button("🧮 Predict"):
             )
             components.html(shap.getjs() + force_plot_html.html(), height=400)
 
+# ===== 页脚 =====
 st.markdown("---")
 st.markdown("Developed for 10-level HSR prediction · Research use only.")
