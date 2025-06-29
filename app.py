@@ -67,7 +67,7 @@ def draw_hsr_star_plot(score):
     full_stars = int(score)
     half_star = (score - full_stars) >= 0.5
 
-    for i in range(10):
+    for i in range(5):
         x = 0.9 + i
         if i < full_stars:
             ax.text(x, 1.0, '★', fontsize=32, ha='center', va='center', color='black')
@@ -118,8 +118,10 @@ if st.sidebar.button("🧮 Predict"):
     prediction = model.predict(user_scaled_df)[0]
     prob_array = model.predict_proba(user_scaled_df)[0]
 
-    # 使用模型真实类别建立 label_map
-    label_map = {cls: round(0.5 + 0.5 * cls, 1) for cls in model.classes_}
+    label_map = {
+        0: 0.5, 1: 1.0, 2: 1.5, 3: 2.0, 4: 2.5,
+        5: 3.0, 6: 3.5, 7: 4.0, 8: 4.5, 9: 5.0
+    }
     predicted_label = label_map.get(prediction, f"Class {prediction}")
 
     st.subheader("🔍 Prediction Result")
@@ -128,7 +130,7 @@ if st.sidebar.button("🧮 Predict"):
 
     st.subheader("📊 Probability Table")
     prob_df = pd.DataFrame({
-        "HSR Class": [label_map[cls] for cls in model.classes_],
+        "HSR Class": [label_map[i] for i in range(len(prob_array))],
         "Probability": [f"{p:.2f}" for p in prob_array]
     })
     st.dataframe(prob_df, use_container_width=True)
@@ -136,8 +138,8 @@ if st.sidebar.button("🧮 Predict"):
     st.subheader("📈 SHAP Force Plot (All Classes)")
     shap_values = explainer(user_scaled_df)
     sample_index = 0
-    for i, cls in enumerate(model.classes_):
-        with st.expander(f"🔍 SHAP for Class {label_map[cls]}"):
+    for i in range(10):
+        with st.expander(f"🔍 SHAP for Class {label_map[i]}"):
             force_plot_html = shap.plots.force(
                 base_value=explainer.expected_value[i],
                 shap_values=shap_values.values[sample_index, :, i],
