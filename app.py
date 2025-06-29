@@ -67,7 +67,7 @@ def draw_hsr_star_plot(score):
     full_stars = int(score)
     half_star = (score - full_stars) >= 0.5
 
-    for i in range(5):
+    for i in range(10):
         x = 0.9 + i
         if i < full_stars:
             ax.text(x, 1.0, '★', fontsize=32, ha='center', va='center', color='black')
