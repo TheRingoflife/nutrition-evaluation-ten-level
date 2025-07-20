@@ -57,7 +57,7 @@ label_map = {
 }
 
 # ===== HSR 风格星图绘制函数 =====
-def draw_hsr_circle_plot(score):
+def draw_hsr_star_plot(score):
     fig, ax = plt.subplots(figsize=(8, 3))
     ax.set_xlim(0, 6)
     ax.set_ylim(0, 2)
