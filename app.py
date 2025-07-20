@@ -57,31 +57,43 @@ label_map = {
 }
 
 # ===== HSR 风格星图绘制函数 =====
-def draw_hsr_star_plot(score):
+def draw_hsr_circle_plot(score):
     fig, ax = plt.subplots(figsize=(8, 3))
     ax.set_xlim(0, 6)
     ax.set_ylim(0, 2)
     ax.axis('off')
 
-    box = plt.Rectangle((0.2, 0.4), 5.6, 1.2, linewidth=2,
-                        edgecolor='black', facecolor='white')
+    box = patches.Rectangle((0.2, 0.4), 5.6, 1.2, linewidth=2,
+                            edgecolor='black', facecolor='white')
     ax.add_patch(box)
 
     ax.text(3.0, 1.65, "HEALTH STAR RATING", fontsize=14, ha='center', fontweight='bold')
 
-    full_stars = int(score)
-    half_star = (score - full_stars) >= 0.5
+    full_circles = int(score)
+    half_circle = (score - full_circles) >= 0.5
 
     for i in range(5):
         x = 0.9 + i
-        if i < full_stars:
-            ax.text(x, 1.0, '★', fontsize=32, ha='center', va='center', color='black')
-        elif i == full_stars and half_star:
-            ax.text(x, 1.0, '⯨', fontsize=32, ha='center', va='center', color='black')
+        y = 1.0
+        radius = 0.15
+
+        if i < full_circles:
+            circle = patches.Circle((x, y), radius, color='black')
+            ax.add_patch(circle)
+        elif i == full_circles and half_circle:
+
+            circle_bg = patches.Circle((x, y), radius, edgecolor='gray', facecolor='white', linewidth=2)
+            ax.add_patch(circle_bg)
+
+            wedge = patches.Wedge(center=(x, y), r=radius, theta1=90, theta2=270, facecolor='black')
+            ax.add_patch(wedge)
         else:
-            ax.text(x, 1.0, '☆', fontsize=32, ha='center', va='center', color='gray')
+            circle = patches.Circle((x, y), radius, edgecolor='gray', facecolor='white', linewidth=2)
+            ax.add_patch(circle)
+
 
     ax.text(5.45, 1.05, f"{score:.1f}", fontsize=17, fontweight='bold', va='center', ha='left', color='#222')
+
     plt.tight_layout()
     return fig
 
