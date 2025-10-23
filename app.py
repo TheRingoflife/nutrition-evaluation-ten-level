@@ -26,8 +26,8 @@ LANGUAGES = {
 TEXTS = {
     "en": {
         "title": "🍱 Nutritional Quality Classifier",
-        "subtitle": "ML-Powered Ready-to-Eat Food Health Assessment (9-Class 0.5-4.5)",
-        "description": "This advanced machine learning application uses XGBoost to predict the nutritional healthiness of ready-to-eat foods based on 4 key nutritional features with 9 health grades (0.5-4.5).",
+        "subtitle": "ML-Powered Ready Food Health Assessment (9-Class 0.5-4.5)",
+        "description": "This advanced machine learning application uses XGBoost to predict the nutritional healthiness of ready foods based on 4 key nutritional features with 9 health grades (0.5-4.5).",
         "target_audience": "🎯 Target Audience",
         "audience_desc": "Designed for countries with limited nutritional information and consumers seeking quick, reliable food health assessments.",
         "problem_statement": "📊 Problem Statement",
@@ -79,8 +79,8 @@ TEXTS = {
     },
     "zh": {
         "title": "🍱 营养质量分类器",
-        "subtitle": "ML驱动的即食食品健康评估（九分类0.5-4.5等级）",
-        "description": "这个先进的机器学习应用程序使用XGBoost根据4个关键营养特征预测即食食品的营养健康性，分为9个健康等级（0.5-4.5）。",
+        "subtitle": "ML驱动的预制食品健康评估（九分类0.5-4.5等级）",
+        "description": "这个先进的机器学习应用程序使用XGBoost根据4个关键营养特征预测预制食品的营养健康性，分为9个健康等级（0.5-4.5）。",
         "target_audience": "🎯 目标用户",
         "audience_desc": "专为营养信息有限的国家和寻求快速、可靠食品健康评估的消费者设计。",
         "problem_statement": "📊 问题陈述",
