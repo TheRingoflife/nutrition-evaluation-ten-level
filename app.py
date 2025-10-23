@@ -44,15 +44,15 @@ TEXTS = {
         "predict_button": "🧮 Predict Healthiness",
         "prediction_result": "🔍 Prediction Result",
         "health_categories": {
-            0: {"name": "0.5", "stars": "⭐☆☆☆☆", "color": "#dc3545", "description": "Very Unhealthy"},
-            1: {"name": "1.0", "stars": "⭐⭐☆☆☆", "color": "#fd7e14", "description": "Unhealthy"},
-            2: {"name": "1.5", "stars": "⭐⭐☆☆☆", "color": "#ffc107", "description": "Poor"},
-            3: {"name": "2.0", "stars": "⭐⭐☆☆☆", "color": "#ffc107", "description": "Below Average"},
-            4: {"name": "2.5", "stars": "⭐⭐⭐☆☆", "color": "#ffc107", "description": "Average"},
-            5: {"name": "3.0", "stars": "⭐⭐⭐☆☆", "color": "#ffc107", "description": "Above Average"},
-            6: {"name": "3.5", "stars": "⭐⭐⭐⭐☆", "color": "#28a745", "description": "Good"},
-            7: {"name": "4.0", "stars": "⭐⭐⭐⭐☆", "color": "#28a745", "description": "Very Good"},
-            8: {"name": "4.5", "stars": "⭐⭐⭐⭐⭐", "color": "#20c997", "description": "Excellent"}
+            0: {"name": "0.5", "stars": "0.5⭐", "color": "#dc3545", "description": "Very Unhealthy"},
+            1: {"name": "1.0", "stars": "1.0⭐", "color": "#fd7e14", "description": "Unhealthy"},
+            2: {"name": "1.5", "stars": "1.5⭐", "color": "#ffc107", "description": "Poor"},
+            3: {"name": "2.0", "stars": "2.0⭐", "color": "#ffc107", "description": "Below Average"},
+            4: {"name": "2.5", "stars": "2.5⭐", "color": "#ffc107", "description": "Average"},
+            5: {"name": "3.0", "stars": "3.0⭐", "color": "#ffc107", "description": "Above Average"},
+            6: {"name": "3.5", "stars": "3.5⭐", "color": "#28a745", "description": "Good"},
+            7: {"name": "4.0", "stars": "4.0⭐", "color": "#28a745", "description": "Very Good"},
+            8: {"name": "4.5", "stars": "4.5⭐", "color": "#20c997", "description": "Excellent"}
         },
         "confidence": "Confidence",
         "feature_importance": "📊 Feature Importance",
@@ -97,15 +97,15 @@ TEXTS = {
         "predict_button": "🧮 预测健康性",
         "prediction_result": "🔍 预测结果",
         "health_categories": {
-            0: {"name": "0.5", "stars": "⭐☆☆☆☆", "color": "#dc3545", "description": "非常不健康"},
-            1: {"name": "1.0", "stars": "⭐⭐☆☆☆", "color": "#fd7e14", "description": "不健康"},
-            2: {"name": "1.5", "stars": "⭐⭐☆☆☆", "color": "#ffc107", "description": "较差"},
-            3: {"name": "2.0", "stars": "⭐⭐☆☆☆", "color": "#ffc107", "description": "低于平均"},
-            4: {"name": "2.5", "stars": "⭐⭐⭐☆☆", "color": "#ffc107", "description": "平均"},
-            5: {"name": "3.0", "stars": "⭐⭐⭐☆☆", "color": "#ffc107", "description": "高于平均"},
-            6: {"name": "3.5", "stars": "⭐⭐⭐⭐☆", "color": "#28a745", "description": "良好"},
-            7: {"name": "4.0", "stars": "⭐⭐⭐⭐☆", "color": "#28a745", "description": "很好"},
-            8: {"name": "4.5", "stars": "⭐⭐⭐⭐⭐", "color": "#20c997", "description": "优秀"}
+            0: {"name": "0.5", "stars": "0.5⭐", "color": "#dc3545", "description": "非常不健康"},
+            1: {"name": "1.0", "stars": "1.0⭐", "color": "#fd7e14", "description": "不健康"},
+            2: {"name": "1.5", "stars": "1.5⭐", "color": "#ffc107", "description": "较差"},
+            3: {"name": "2.0", "stars": "2.0⭐", "color": "#ffc107", "description": "低于平均"},
+            4: {"name": "2.5", "stars": "2.5⭐", "color": "#ffc107", "description": "平均"},
+            5: {"name": "3.0", "stars": "3.0⭐", "color": "#ffc107", "description": "高于平均"},
+            6: {"name": "3.5", "stars": "3.5⭐", "color": "#28a745", "description": "良好"},
+            7: {"name": "4.0", "stars": "4.0⭐", "color": "#28a745", "description": "很好"},
+            8: {"name": "4.5", "stars": "4.5⭐", "color": "#20c997", "description": "优秀"}
         },
         "confidence": "置信度",
         "feature_importance": "📊 特征重要性",
@@ -273,7 +273,7 @@ if st.sidebar.button(texts['predict_button'], type="primary", use_container_widt
         category_info = texts['health_categories'][prediction]
         confidence = probabilities[prediction]
         
-        # 结果卡片 - 使用星星显示
+        # 结果卡片 - 使用数字+星星显示
         st.markdown(f"""
         <div style="background: {category_info['color']}; color: white; padding: 2rem; border-radius: 10px; text-align: center; margin: 1rem 0;">
             <h2 style="margin: 0; font-size: 2.5rem;">{category_info['stars']}</h2>
@@ -282,7 +282,7 @@ if st.sidebar.button(texts['predict_button'], type="primary", use_container_widt
         </div>
         """, unsafe_allow_html=True)
         
-        # 显示所有类别的概率 - 使用两行显示9个等级，用星星表示
+        # 显示所有类别的概率 - 使用两行显示9个等级，用数字+星星表示
         st.markdown("### 📊 Prediction Probabilities (0.5-4.5 Grades)")
         prob_cols = st.columns(5)
         for i, (col, (cat_id, cat_info)) in enumerate(zip(prob_cols, list(texts['health_categories'].items())[:5])):
