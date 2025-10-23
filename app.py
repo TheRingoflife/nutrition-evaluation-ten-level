@@ -23,31 +23,17 @@ LANGUAGES = {
     "中文": "zh"
 }
 
-# 星星显示函数
-def get_stars(rating):
-    """将0.5-5.0的评分转换为星星显示"""
-    full_stars = int(rating)
-    half_star = 1 if rating % 1 >= 0.5 else 0
-    empty_stars = 5 - full_stars - half_star
-    
-    stars = "⭐" * full_stars
-    if half_star:
-        stars += "⭐"  # 半颗星星用完整星星表示
-    stars += "☆" * empty_stars
-    
-    return stars
-
 TEXTS = {
     "en": {
         "title": "🍱 Nutritional Quality Classifier",
-        "subtitle": "ML-Powered Ready-to-Eat Food Health Assessment (10-Class 0.5-5.0)",
-        "description": "This advanced machine learning application uses XGBoost to predict the nutritional healthiness of ready-to-eat foods based on 4 key nutritional features with 10 health grades (0.5-5.0).",
+        "subtitle": "ML-Powered Ready-to-Eat Food Health Assessment (9-Class 0.5-4.5)",
+        "description": "This advanced machine learning application uses XGBoost to predict the nutritional healthiness of ready-to-eat foods based on 4 key nutritional features with 9 health grades (0.5-4.5).",
         "target_audience": "🎯 Target Audience",
         "audience_desc": "Designed for countries with limited nutritional information and consumers seeking quick, reliable food health assessments.",
         "problem_statement": "📊 Problem Statement",
         "problem_desc": "Many countries lack comprehensive nutritional labeling systems, making it difficult to implement generalized positive labeling for food products.",
         "solution": "💡 Our Solution",
-        "solution_desc": "Advanced ML model analyzes 4 key nutritional features to provide instant, accurate health predictions with detailed explanations across 10 health grades (0.5-5.0).",
+        "solution_desc": "Advanced ML model analyzes 4 key nutritional features to provide instant, accurate health predictions with detailed explanations across 9 health grades (0.5-4.5).",
         "mission": "🚀 Mission",
         "mission_desc": "Providing a practical approach for countries with incomplete nutritional information to implement effective food health assessment systems.",
         "input_variables": "🔢 Input Variables",
@@ -66,8 +52,7 @@ TEXTS = {
             5: {"name": "3.0", "stars": "⭐⭐⭐☆☆", "color": "#ffc107", "description": "Above Average"},
             6: {"name": "3.5", "stars": "⭐⭐⭐⭐☆", "color": "#28a745", "description": "Good"},
             7: {"name": "4.0", "stars": "⭐⭐⭐⭐☆", "color": "#28a745", "description": "Very Good"},
-            8: {"name": "4.5", "stars": "⭐⭐⭐⭐⭐", "color": "#20c997", "description": "Excellent"},
-            9: {"name": "5.0", "stars": "⭐⭐⭐⭐⭐", "color": "#20c997", "description": "Outstanding"}
+            8: {"name": "4.5", "stars": "⭐⭐⭐⭐⭐", "color": "#20c997", "description": "Excellent"}
         },
         "confidence": "Confidence",
         "feature_importance": "📊 Feature Importance",
@@ -83,7 +68,7 @@ TEXTS = {
         "positive_impact": "Positive Impact (Higher Health)",
         "negative_impact": "Negative Impact (Lower Health)",
         "warning_input": "⚠️ Please enter values for at least one feature before predicting.",
-        "input_tip": "💡 Tip: Please enter the nutritional information of the food, and the system will predict its healthiness across 10 grades (0.5-5.0).",
+        "input_tip": "💡 Tip: Please enter the nutritional information of the food, and the system will predict its healthiness across 9 grades (0.5-4.5).",
         "model_error": "❌ Cannot proceed without model and scaler files",
         "prediction_failed": "Prediction failed",
         "shap_failed": "SHAP analysis failed",
@@ -94,14 +79,14 @@ TEXTS = {
     },
     "zh": {
         "title": "🍱 营养质量分类器",
-        "subtitle": "ML驱动的即食食品健康评估（十分类0.5-5.0等级）",
-        "description": "这个先进的机器学习应用程序使用XGBoost根据4个关键营养特征预测即食食品的营养健康性，分为10个健康等级（0.5-5.0）。",
+        "subtitle": "ML驱动的即食食品健康评估（九分类0.5-4.5等级）",
+        "description": "这个先进的机器学习应用程序使用XGBoost根据4个关键营养特征预测即食食品的营养健康性，分为9个健康等级（0.5-4.5）。",
         "target_audience": "🎯 目标用户",
         "audience_desc": "专为营养信息有限的国家和寻求快速、可靠食品健康评估的消费者设计。",
         "problem_statement": "📊 问题陈述",
         "problem_desc": "许多国家缺乏全面的营养标签系统，难以实施食品的概括性正面标签。",
         "solution": "💡 我们的解决方案",
-        "solution_desc": "先进的ML模型分析4个关键营养特征，提供即时、准确的健康预测和详细解释，涵盖10个健康等级（0.5-5.0）。",
+        "solution_desc": "先进的ML模型分析4个关键营养特征，提供即时、准确的健康预测和详细解释，涵盖9个健康等级（0.5-4.5）。",
         "mission": "🚀 使命",
         "mission_desc": "为营养信息纰漏不全导致无法使用概括性正面标签的国家提供一个使用思路。",
         "input_variables": "🔢 输入变量",
@@ -120,8 +105,7 @@ TEXTS = {
             5: {"name": "3.0", "stars": "⭐⭐⭐☆☆", "color": "#ffc107", "description": "高于平均"},
             6: {"name": "3.5", "stars": "⭐⭐⭐⭐☆", "color": "#28a745", "description": "良好"},
             7: {"name": "4.0", "stars": "⭐⭐⭐⭐☆", "color": "#28a745", "description": "很好"},
-            8: {"name": "4.5", "stars": "⭐⭐⭐⭐⭐", "color": "#20c997", "description": "优秀"},
-            9: {"name": "5.0", "stars": "⭐⭐⭐⭐⭐", "color": "#20c997", "description": "卓越"}
+            8: {"name": "4.5", "stars": "⭐⭐⭐⭐⭐", "color": "#20c997", "description": "优秀"}
         },
         "confidence": "置信度",
         "feature_importance": "📊 特征重要性",
@@ -137,7 +121,7 @@ TEXTS = {
         "positive_impact": "积极影响 (更高健康性)",
         "negative_impact": "消极影响 (更低健康性)",
         "warning_input": "⚠️ 请在预测前至少输入一个特征的值。",
-        "input_tip": "💡 提示: 请输入食品的营养成分信息，系统将预测其健康性（10个等级0.5-5.0）。",
+        "input_tip": "💡 提示: 请输入食品的营养成分信息，系统将预测其健康性（9个等级0.5-4.5）。",
         "model_error": "❌ 没有模型和标准化器文件无法继续",
         "prediction_failed": "预测失败",
         "shap_failed": "SHAP分析失败",
@@ -150,7 +134,7 @@ TEXTS = {
 
 # ===== 页面设置 =====
 st.set_page_config(
-    page_title="Nutritional Quality Classifier (10-Class 0.5-5.0)",
+    page_title="Nutritional Quality Classifier (9-Class 0.5-4.5)",
     page_icon="🍱",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -277,6 +261,11 @@ if st.sidebar.button(texts['predict_button'], type="primary", use_container_widt
         prediction = model.predict(user_scaled_df)[0]
         probabilities = model.predict_proba(user_scaled_df)[0]
         
+        # 检查预测结果是否在有效范围内
+        if prediction >= len(texts['health_categories']):
+            st.error(f"Prediction index {prediction} is out of range. Expected 0-{len(texts['health_categories'])-1}")
+            st.stop()
+        
         # 3. 展示结果 - 美化
         st.markdown(f"## {texts['prediction_result']}")
         
@@ -293,8 +282,8 @@ if st.sidebar.button(texts['predict_button'], type="primary", use_container_widt
         </div>
         """, unsafe_allow_html=True)
         
-        # 显示所有类别的概率 - 使用两行显示10个等级，用星星表示
-        st.markdown("### 📊 Prediction Probabilities (0.5-5.0 Grades)")
+        # 显示所有类别的概率 - 使用两行显示9个等级，用星星表示
+        st.markdown("### 📊 Prediction Probabilities (0.5-4.5 Grades)")
         prob_cols = st.columns(5)
         for i, (col, (cat_id, cat_info)) in enumerate(zip(prob_cols, list(texts['health_categories'].items())[:5])):
             with col:
@@ -306,7 +295,7 @@ if st.sidebar.button(texts['predict_button'], type="primary", use_container_widt
                     delta=delta_value
                 )
         
-        # 第二行显示剩余5个等级
+        # 第二行显示剩余4个等级
         prob_cols2 = st.columns(5)
         for i, (col, (cat_id, cat_info)) in enumerate(zip(prob_cols2, list(texts['health_categories'].items())[5:])):
             with col:
