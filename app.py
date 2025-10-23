@@ -382,7 +382,7 @@ if st.sidebar.button(texts['predict_button'], type="primary", use_container_widt
                                    matplotlib=True, show=False)
                     
                     # 修改标题为纯英文，移除description部分
-                    plt.title(f'SHAP Force Plot - {category_info["stars"]} Prediction', fontsize=16, fontweight='bold', pad=30)
+                    # plt.title(f'SHAP Force Plot - {category_info["stars"]} Prediction', fontsize=16, fontweight='bold', pad=30)
                     plt.tight_layout()
                     st.pyplot(plt)
                     plt.close()
