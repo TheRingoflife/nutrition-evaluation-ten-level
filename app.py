@@ -41,6 +41,10 @@ TEXTS = {
         "sodium_label": "Sodium (mg/100g)",
         "energy_label": "Energy (kJ/100g)",
         "processed_label": "Is Ultra-Processed? (procef_4)",
+        "help_sodium": "Sodium content per 100g of food",
+        "help_energy": "Energy content per 100g of food",
+        "help_protein": "Protein content per 100g of food",
+        "help_procef_4": "0=Not ultra-processed, 1=Ultra-processed",
         "predict_button": "🧮 Predict Healthiness",
         "prediction_result": "🔍 Prediction Result",
         "health_categories": {
@@ -95,6 +99,10 @@ TEXTS = {
         "sodium_label": "钠 (mg/100g)",
         "energy_label": "能量 (kJ/100g)",
         "processed_label": "是否超加工？(procef_4)",
+        "help_sodium": "每100g食品中的钠含量",
+        "help_energy": "每100g食品中的能量含量",
+        "help_procef_4": "0=非超加工, 1=超加工",
+        "help_protein": "每100g食品中的蛋白质含量",
         "predict_button": "🧮 预测健康性",
         "prediction_result": "🔍 预测结果",
         "health_categories": {
@@ -241,10 +249,10 @@ st.sidebar.markdown(f"""
 """, unsafe_allow_html=True)
 
 # 4个输入特征，按照指定顺序：能量、蛋白质、钠、procef_4，默认为空
-energy = st.sidebar.number_input(texts['energy_label'], min_value=0.0, step=1.0, value=None, help="每100g食品中的能量含量")
-protein = st.sidebar.number_input(texts['protein_label'], min_value=0.0, step=0.1, value=None, help="每100g食品中的蛋白质含量")
-sodium = st.sidebar.number_input(texts['sodium_label'], min_value=0.0, step=1.0, value=None, help="每100g食品中的钠含量")
-procef_4 = st.sidebar.selectbox(texts['processed_label'], [0, 1], help="0=非超加工, 1=超加工")
+energy = st.sidebar.number_input(texts['energy_label'], min_value=0.0, step=1.0, value=None, help=texts['help_energy'])
+protein = st.sidebar.number_input(texts['protein_label'], min_value=0.0, step=0.1, value=None, help=texts['help_protein'])
+sodium = st.sidebar.number_input(texts['sodium_label'], min_value=0.0, step=1.0, value=None, help=texts['help_sodium'])
+procef_4 = st.sidebar.selectbox(texts['processed_label'], [0, 1], help=texts['help_procef_4'])
 
 # 添加预测按钮样式
 if st.sidebar.button(texts['predict_button'], type="primary", use_container_width=True):
